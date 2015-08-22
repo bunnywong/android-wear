@@ -170,14 +170,11 @@ public class WearActivity extends Activity {
                             if(recordType == "recordSmall")
                                 ((TextView) findViewById(R.id.textSmall)).setText("S (" + logSmall + ")");
                             if(recordType == "recordBig")
-                            ((TextView) findViewById(R.id.textBig)).setText("(" + logBig + ") B");
+                                ((TextView) findViewById(R.id.textBig)).setText("(" + logBig + ") B");
                             if(recordType == "recordDraw")
-                            ((TextView) findViewById(R.id.textDraw)).setText("D (" + logDraw + ")");
+                                ((TextView) findViewById(R.id.textDraw)).setText("D (" + logDraw + ")");
                         }
                     }, 500);
-
-                // Log read - DEBUG // ***
-//                Log.d("recordBig", "" + logRecord);
             }
         }
     }
@@ -207,6 +204,33 @@ public class WearActivity extends Activity {
 
                 ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
+                // Do record update by voice command
+                if (textMatchList.get(0).contains("small")) {
+                    updateLog("small");
+                } else if (textMatchList.get(0).contains("big")) {
+                    updateLog("big");
+                } else if (textMatchList.get(0).contains("draw")) {
+                    updateLog("draw");
+                } else if (textMatchList.get(0).contains("clear")) {
+                    updateLog("clear");
+                } else {
+                    // populate the Matches
+                    ((TextView) findViewById(R.id.textBoard)).setText(textMatchList.toString());
+                    // if the above does not look good
+                    // for (String match : textMatchList) {
+                    //        result.append(match + "\n"); // or whatever separator you want
+                    //   }
+
+
+                    // ***
+                    String adminMsg = "Only Accept:\n" + " Big, Small, Draw";
+                    showToastMessage(adminMsg);
+                    Wearable.MessageApi.sendMessage(apiClient, remoteNodeId, COMMAND_PATH, adminMsg.getBytes());
+                }
+
+
+
+
             if (!textMatchList.isEmpty()) {
                 String voiceMessage = StringUtils.join(textMatchList.iterator(), "#");
                 Wearable.MessageApi.sendMessage(apiClient, remoteNodeId, COMMAND_PATH, voiceMessage.getBytes());
@@ -223,8 +247,6 @@ public class WearActivity extends Activity {
             } else if (resultCode == RecognizerIntent.RESULT_SERVER_ERROR) {
                 showToastMessage("Server Error");
             }
-
-            //TODO: no message sent may be possible.
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
