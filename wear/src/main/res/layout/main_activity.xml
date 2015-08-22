@@ -26,7 +26,7 @@
     <ImageButton
         android:id="@+id/btSpeak"
         android:onClick="speak"
-        android:src="@drawable/punch_selector"
+        android:src="@drawable/my_mic_selector"
         android:background="@color/white"
         tools:context=".VoiceRecognitionActivity"
         android:layout_width="wrap_content"
@@ -45,8 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_centerVertical="true"
-        android:layout_marginTop="10dp"
-        android:layout_alignEnd="@+id/btSpeak" />
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="32dp"
