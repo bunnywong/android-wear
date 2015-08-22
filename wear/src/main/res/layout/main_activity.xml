@@ -122,8 +122,9 @@
         android:paddingRight="10dp"
         android:textStyle="bold"
         android:onClick="recordClear"
+        android:clickable="false"
         android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/textBig" />
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

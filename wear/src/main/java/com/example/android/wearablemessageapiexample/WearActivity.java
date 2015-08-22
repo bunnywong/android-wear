@@ -27,6 +27,7 @@ import com.google.android.gms.wearable.Wearable;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WearActivity extends Activity {
@@ -48,7 +49,6 @@ public class WearActivity extends Activity {
         mTextDraw   = (TextView) findViewById(R.id.textDraw);
         mTextBig    = (TextView) findViewById(R.id.textBig);
         mTextClear  = (TextView) findViewById(R.id.textClear);
-        calcStr     = "";
 
         apiClient = apiClientFactory();
         checkVoiceRecognition();
@@ -127,23 +127,40 @@ public class WearActivity extends Activity {
             // Print status to user
             ((TextView)findViewById(R.id.textBoard)).setText("updating " + mode + " ...");
 
+            /* Update record */
             // Get log
             int result = sharedPref.getInt(recordType, 0);
-
             // Write log
             editor.putInt(recordType, (result + 1));
-
             // Get log
             int resultUpdated = sharedPref.getInt(recordType, 0);
 
-            // Print updated record with delay
+            /* Show analytics in delay 0.5s */
             if(editor.commit()) {
-                final String updatedMsg = "updated - " + mode + " as " + resultUpdated;
+                // Hide btn when updating
+                if(recordType == "recordSmall")
+                    ((TextView) findViewById(R.id.textSmall)).setText("S");
+                if(recordType == "recordBig")
+                    ((TextView) findViewById(R.id.textBig)).setText("B");
+                if(recordType == "recordDraw")
+                    ((TextView) findViewById(R.id.textDraw)).setText("D");
+
+                // Get results
+                final int logSmall = sharedPref.getInt("recordSmall", 0);
+                final int logBig = sharedPref.getInt("recordBig", 0);
+                final int logDraw = sharedPref.getInt("recordDraw", 0);
+                int logTotal[] = {logSmall, logBig, logDraw};
+                Arrays.sort(logTotal);
+                final String updatedMsg = "s" + logSmall + ", " + "b" + logBig + ", " + "d" + logDraw ;
 
                 new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
                             ((TextView) findViewById(R.id.textBoard)).setText(updatedMsg);
+
+                            ((TextView) findViewById(R.id.textSmall)).setText("S (" + logSmall + ")");
+                            ((TextView) findViewById(R.id.textBig)).setText("(" + logBig + ") B");
+                            ((TextView) findViewById(R.id.textDraw)).setText("D (" + logDraw + ")");
                         }
                     }, 500);
 
