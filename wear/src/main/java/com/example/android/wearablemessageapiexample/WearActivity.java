@@ -34,7 +34,7 @@ public class WearActivity extends Activity {
     private final String COMMAND_PATH = "/command";
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
     private GoogleApiClient apiClient;
-    private String remoteNodeId, calcStr;
+    private String remoteNodeId;
     private ImageButton mbtSpeak;
 
     private TextView mTextSmall, mTextBig, mTextDraw, mTextClear;
@@ -85,7 +85,7 @@ public class WearActivity extends Activity {
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
 
-    // Bind: click
+    // Bind: click / voice
     public void recordSmall(View view) {
         updateLog("small");
     }
@@ -97,6 +97,9 @@ public class WearActivity extends Activity {
     }
     public void recordClear(View view) {
         updateLog("clear");
+    }
+    public void backToVoiceCommand() {
+        mbtSpeak.performClick();
     }
 
     public void updateLog(String mode) {
@@ -112,7 +115,7 @@ public class WearActivity extends Activity {
             recordType = "recordClear";
         }
 
-        // Log prepare
+        // Log init
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -179,10 +182,6 @@ public class WearActivity extends Activity {
         }
     }
 
-    public void boardUpdate(final String str) {
-
-    }
-
     /**
      * Allows the app to send asyncronic messages and no blocking the UI thread
      */
@@ -204,32 +203,45 @@ public class WearActivity extends Activity {
 
                 ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-                // Do record update by voice command
-                if (textMatchList.get(0).contains("small")) {
-                    updateLog("small");
-                } else if (textMatchList.get(0).contains("big")) {
-                    updateLog("big");
-                } else if (textMatchList.get(0).contains("draw")) {
-                    updateLog("draw");
-                } else if (textMatchList.get(0).contains("clear")) {
-                    updateLog("clear");
+
+                /* Check without `clear` */
+                if (textMatchList.get(0).contains("clear")) {
+                    // `clear` validate
+                    if (textMatchList.toString().replace("[", "").replace("]", "").equals("clear")) {
+                        updateLog("clear");
+                    } else {
+                        showToastMessage("`clear` command must be unique");
+                        backToVoiceCommand();
+                    }
                 } else {
-                    // populate the Matches
-                    ((TextView) findViewById(R.id.textBoard)).setText(textMatchList.toString());
-                    // if the above does not look good
-                    // for (String match : textMatchList) {
-                    //        result.append(match + "\n"); // or whatever separator you want
-                    //   }
+                    // Combo input to logger
+                    String words        = textMatchList.toString().replace("[", "").replace("]", "");;
+                    String[] word       = words.split(" ");
+                    int counterBig      = 0;
+                    int counterSmall    = 0;
+                    int counterDraw     = 0;
 
+                    for (int i = 0; i < word.length; i++) {
+                        if (word[i].toString().equals("small")) {
+                            updateLog("small");
+                            counterSmall++;
+                        } else if (word[i].toString().equals("big")) {
+                            updateLog("big");
+                            counterBig++;
+                        } else if (word[i].toString().equals("draw")) {
+                            updateLog("draw");
+                            counterDraw++;
+                        }
+                    }
 
-                    // ***
-                    String adminMsg = "Only Accept:\n" + " Big, Small, Draw";
-                    showToastMessage(adminMsg);
-                    Wearable.MessageApi.sendMessage(apiClient, remoteNodeId, COMMAND_PATH, adminMsg.getBytes());
+                    // Summary alert
+                    if (counterSmall > 0)
+                        showToastMessage("updated: Small +" + counterSmall);
+                    if (counterBig > 0)
+                        showToastMessage("updated: Big +" + counterBig);
+                    if (counterDraw > 0)
+                        showToastMessage("updated: Draw +" + counterDraw);
                 }
-
-
-
 
             if (!textMatchList.isEmpty()) {
                 String voiceMessage = StringUtils.join(textMatchList.iterator(), "#");
@@ -258,6 +270,9 @@ public class WearActivity extends Activity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /* ---------------------------------------------------------------------------------------------------- */
+    /*  Other status     */
+    /* ---------------------------------------------------------------------------------------------------- */
     @Override
     protected void onResume() {
         super.onResume();
