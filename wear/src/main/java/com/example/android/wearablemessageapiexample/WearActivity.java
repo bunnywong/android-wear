@@ -43,8 +43,6 @@ import java.util.List;
 
 public class WearActivity extends Activity {
 
-    private final String RIGHT_SPIN_MOVE = "Right_Turn";
-    private final String LEFT_SPIN_MOVE = "Left_Turn";
     private final String WALK_MOVE = "Advance";
     private final String RIGHT_MOVE = "Sidestep_Right";
     private final String LEFT_MOVE = "Sidestep_Left";
@@ -61,8 +59,6 @@ public class WearActivity extends Activity {
         setContentView(R.layout.main_activity);
 
         mbtSpeak = (ImageButton) findViewById(R.id.btSpeak);
-        mbtLeft = (ImageButton) findViewById(R.id.btLeftSpin);
-        mbtRight = (ImageButton) findViewById(R.id.btRightSpin);
         mbtWalk = (ImageButton) findViewById(R.id.btWalk);
         mbtRightSidewalk = (ImageButton) findViewById(R.id.btRightWalk);
         mbtLeftSidewalk = (ImageButton) findViewById(R.id.btLeftWalk);
@@ -102,13 +98,6 @@ public class WearActivity extends Activity {
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
 
-    public void rightSpinMove(View view) {
-        new SendMessage().execute(RIGHT_SPIN_MOVE);
-    }
-
-    public void leftSpinMove(View view) {
-        new SendMessage().execute(LEFT_SPIN_MOVE);
-    }
 
     public void walkMove(View view) {
         new SendMessage().execute(WALK_MOVE);
