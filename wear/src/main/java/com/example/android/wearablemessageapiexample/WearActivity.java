@@ -100,12 +100,12 @@ public class WearActivity extends Activity {
     }
 
     public void updateLog(String mode) {
-        String recordType;
+        final String recordType;
 
-        if (mode == "big") {
-            recordType = "recordBig";
-        } else if (mode == "small") {
+        if (mode == "small") {
             recordType = "recordSmall";
+        } else if (mode == "big") {
+            recordType = "recordBig";
         } else if (mode == "draw") {
             recordType = "recordDraw";
         } else {
@@ -117,12 +117,20 @@ public class WearActivity extends Activity {
         SharedPreferences.Editor editor = sharedPref.edit();
 
         if (recordType == "recordClear") {
-            // 1. Do confirm first
-            // 2. Clear log history
-            editor.putInt("recordSmall", 0);
-            editor.putInt("recordBig", 0);
-            editor.putInt("recordDraw", 0);
+            // 1. Do confirm first (advance)
+            // Clear log history
+            editor.remove("recordSmall")
+                .remove("recordBig")
+                .remove("recordDraw")
+            .apply();
 
+            // Clear board
+            ((TextView)findViewById(R.id.textBoard)).setText("Record empty");
+
+            // btn - init
+            ((TextView) findViewById(R.id.textSmall)).setText("S");
+            ((TextView) findViewById(R.id.textBig)).setText("B");
+            ((TextView) findViewById(R.id.textDraw)).setText("D");
         } else {
             // Print status to user
             ((TextView)findViewById(R.id.textBoard)).setText("updating " + mode + " ...");
@@ -158,8 +166,12 @@ public class WearActivity extends Activity {
                         public void run() {
                             ((TextView) findViewById(R.id.textBoard)).setText(updatedMsg);
 
-                            ((TextView) findViewById(R.id.textSmall)).setText("S (" + logSmall + ")");
+                            // btn - Rewrite
+                            if(recordType == "recordSmall")
+                                ((TextView) findViewById(R.id.textSmall)).setText("S (" + logSmall + ")");
+                            if(recordType == "recordBig")
                             ((TextView) findViewById(R.id.textBig)).setText("(" + logBig + ") B");
+                            if(recordType == "recordDraw")
                             ((TextView) findViewById(R.id.textDraw)).setText("D (" + logDraw + ")");
                         }
                     }, 500);
