@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2014 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/backgroud"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ImageButton
+        android:id="@+id/btSpeak"
+        android:onClick="speak"
+        android:src="@drawable/punch_selector"
+        android:background="@color/white"
+        tools:context=".VoiceRecognitionActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_below="@+id/btWalk"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <ImageButton
+        android:src="@drawable/left_selector"
+        android:background="@color/white"
+        android:id="@+id/btLeftSpin"
+        android:onClick="leftSpinMove"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:layout_above="@+id/btSpeak"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/btSpeak" />
+
+    <ImageButton
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/right_selector"
+        android:background="@color/white"
+        android:id="@+id/btRightSpin"
+        android:onClick="rightSpinMove"
+        android:layout_gravity="right|center_vertical"
+        android:layout_above="@+id/btSpeak"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/btWalk" />
+
+    <ImageButton
+        android:src="@drawable/walk_selector"
+        android:id="@+id/btWalk"
+        android:onClick="walkMove"
+        android:background="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:layout_alignEnd="@+id/btSpeak"
+        android:layout_toEndOf="@+id/btLeftSpin" />
+
+    <ImageButton
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/right_walk_selector"
+        android:background="@color/white"
+        android:id="@+id/btRightWalk"
+        android:onClick="rightWalkMove"
+        android:layout_gravity="right|center_vertical"
+        android:layout_alignTop="@+id/btSpeak"
+        android:layout_alignStart="@+id/btRightSpin"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/left_walk_selector"
+        android:background="@color/white"
+        android:id="@+id/btLeftWalk"
+        android:onClick="leftWalkMove"
+        android:layout_gravity="right|center_vertical"
+        android:layout_alignTop="@+id/btSpeak"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/btSpeak"
+        android:layout_alignBottom="@+id/btRightWalk" />
+
+
+</RelativeLayout>
+
