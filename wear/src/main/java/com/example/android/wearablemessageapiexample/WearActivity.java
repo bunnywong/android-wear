@@ -1,31 +1,18 @@
-/*
- * Copyright 2015 Dejan Djurovski
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.android.wearablemessageapiexample;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+//import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,32 +30,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WearActivity extends Activity {
-
-    private final String WALK_MOVE = "Advance";
-    private final String RIGHT_MOVE = "Sidestep_Right";
-    private final String LEFT_MOVE = "Sidestep_Left";
-
     private final String COMMAND_PATH = "/command";
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
     private GoogleApiClient apiClient;
-    private String remoteNodeId;
-    private ImageButton mbtSpeak, mbtRight, mbtLeft, mbtWalk, mbtRightSidewalk, mbtLeftSidewalk;
+    private String remoteNodeId, calcStr;
+    private ImageButton mbtSpeak;
 
-
-    private TextView mTextSmall, mTextBig;
+    private TextView mTextSmall, mTextBig, mTextDraw, mTextClear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        mbtSpeak = (ImageButton) findViewById(R.id.btSpeak);
-        mbtWalk = (ImageButton) findViewById(R.id.btWalk);
-        mbtRightSidewalk = (ImageButton) findViewById(R.id.btRightWalk);
-        mbtLeftSidewalk = (ImageButton) findViewById(R.id.btLeftWalk);
-
-        mTextSmall = (TextView) findViewById(R.id.textSmall);
-        mTextBig = (TextView) findViewById(R.id.textBig);
+        mbtSpeak    = (ImageButton) findViewById(R.id.btSpeak);
+        mTextSmall  = (TextView) findViewById(R.id.textSmall);
+        mTextDraw   = (TextView) findViewById(R.id.textDraw);
+        mTextBig    = (TextView) findViewById(R.id.textBig);
+        mTextClear  = (TextView) findViewById(R.id.textClear);
+        calcStr     = "";
 
         apiClient = apiClientFactory();
         checkVoiceRecognition();
@@ -105,27 +85,77 @@ public class WearActivity extends Activity {
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
 
-
-    public void walkMove(View view) {
-        new SendMessage().execute(WALK_MOVE);
-    }
-
-    public void leftWalkMove(View view) {
-        new SendMessage().execute(LEFT_MOVE);
-    }
-
-    public void rightWalkMove(View view) {new SendMessage().execute(RIGHT_MOVE);}
-
+    // Bind: click
     public void recordSmall(View view) {
-        ((TextView)findViewById(R.id.textBoard)).setText("Small");
+        updateLog("small");
     }
     public void recordDraw(View view) {
-        ((TextView)findViewById(R.id.textBoard)).setText("Draw");
+        updateLog("draw");
     }
     public void recordBig(View view) {
-        ((TextView)findViewById(R.id.textBoard)).setText("Big");
+        updateLog("big");
+    }
+    public void recordClear(View view) {
+        updateLog("clear");
     }
 
+    public void updateLog(String mode) {
+        String recordType;
+
+        if (mode == "big") {
+            recordType = "recordBig";
+        } else if (mode == "small") {
+            recordType = "recordSmall";
+        } else if (mode == "draw") {
+            recordType = "recordDraw";
+        } else {
+            recordType = "recordClear";
+        }
+
+        // Log prepare
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        if (recordType == "recordClear") {
+            // 1. Do confirm first
+            // 2. Clear log history
+            editor.putInt("recordSmall", 0);
+            editor.putInt("recordBig", 0);
+            editor.putInt("recordDraw", 0);
+
+        } else {
+            // Print status to user
+            ((TextView)findViewById(R.id.textBoard)).setText("updating " + mode + " ...");
+
+            // Get log
+            int result = sharedPref.getInt(recordType, 0);
+
+            // Write log
+            editor.putInt(recordType, (result + 1));
+
+            // Get log
+            int resultUpdated = sharedPref.getInt(recordType, 0);
+
+            // Print updated record with delay
+            if(editor.commit()) {
+                final String updatedMsg = "updated - " + mode + " as " + resultUpdated;
+
+                new android.os.Handler().postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            ((TextView) findViewById(R.id.textBoard)).setText(updatedMsg);
+                        }
+                    }, 500);
+
+                // Log read - DEBUG // ***
+//                Log.d("recordBig", "" + logRecord);
+            }
+        }
+    }
+
+    public void boardUpdate(final String str) {
+
+    }
 
     /**
      * Allows the app to send asyncronic messages and no blocking the UI thread

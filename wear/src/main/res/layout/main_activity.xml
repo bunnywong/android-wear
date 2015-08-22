@@ -32,41 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/textClear"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
-        android:src="@drawable/walk_selector"
-        android:id="@+id/btWalk"
-        android:onClick="walkMove"
-        android:background="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_above="@+id/btRightWalk"
-        android:layout_toEndOf="@+id/btSpeak" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/right_walk_selector"
-        android:background="@color/white"
-        android:id="@+id/btRightWalk"
-        android:onClick="rightWalkMove"
-        android:layout_gravity="right|center_vertical"
-        android:layout_alignBottom="@+id/btSpeak"
-        android:layout_alignParentEnd="true" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/left_walk_selector"
-        android:background="@color/white"
-        android:id="@+id/btLeftWalk"
-        android:onClick="leftWalkMove"
-        android:layout_gravity="right|center_vertical"
-        android:layout_below="@+id/btWalk"
-        android:layout_alignEnd="@+id/textSmall" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -81,9 +49,9 @@
         android:paddingBottom="5dp"
         android:paddingRight="10dp"
         android:textStyle="bold"
-        android:layout_alignTop="@+id/textDraw"
-        android:layout_alignParentStart="true"
-        android:onClick="recordSmall" />
+        android:onClick="recordSmall"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -92,8 +60,6 @@
         android:text="B"
         android:id="@+id/textBig"
         android:background="#666666"
-        android:layout_alignTop="@+id/textSmall"
-        android:layout_alignEnd="@+id/btRightWalk"
         android:autoText="false"
         android:capitalize="characters"
         android:clickable="false"
@@ -102,7 +68,9 @@
         android:paddingRight="10dp"
         android:paddingBottom="5dp"
         android:textStyle="bold"
-        android:onClick="recordBig" />
+        android:onClick="recordBig"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -110,16 +78,17 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="D"
         android:id="@+id/textDraw"
-        android:background="#666666"
+        android:background="#339900"
         android:capitalize="characters"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:paddingRight="10dp"
         android:textStyle="bold"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="recordDraw" />
+        android:onClick="recordDraw"
+        android:layout_alignTop="@+id/textClear"
+        android:layout_alignParentStart="true"
+        android:clickable="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -128,7 +97,7 @@
         android:text="board"
         android:id="@+id/textBoard"
         android:background="#666666"
-        android:capitalize="characters"
+        android:capitalize="words"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
@@ -136,7 +105,25 @@
         android:textStyle="bold"
         android:onClick="recordSmall"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:editable="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="C"
+        android:id="@+id/textClear"
+        android:background="#FF0000"
+        android:capitalize="characters"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:onClick="recordClear"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/textBig" />
 
 
 </RelativeLayout>
