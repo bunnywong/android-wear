@@ -27,6 +27,7 @@ import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -53,6 +54,9 @@ public class WearActivity extends Activity {
     private String remoteNodeId;
     private ImageButton mbtSpeak, mbtRight, mbtLeft, mbtWalk, mbtRightSidewalk, mbtLeftSidewalk;
 
+
+    private TextView mTextSmall, mTextBig;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,9 @@ public class WearActivity extends Activity {
         mbtWalk = (ImageButton) findViewById(R.id.btWalk);
         mbtRightSidewalk = (ImageButton) findViewById(R.id.btRightWalk);
         mbtLeftSidewalk = (ImageButton) findViewById(R.id.btLeftWalk);
+
+        mTextSmall = (TextView) findViewById(R.id.textSmall);
+        mTextBig = (TextView) findViewById(R.id.textBig);
 
         apiClient = apiClientFactory();
         checkVoiceRecognition();
@@ -107,9 +114,18 @@ public class WearActivity extends Activity {
         new SendMessage().execute(LEFT_MOVE);
     }
 
-    public void rightWalkMove(View view) {
-        new SendMessage().execute(RIGHT_MOVE);
+    public void rightWalkMove(View view) {new SendMessage().execute(RIGHT_MOVE);}
+
+    public void recordSmall(View view) {
+        ((TextView)findViewById(R.id.textBoard)).setText("Small");
     }
+    public void recordDraw(View view) {
+        ((TextView)findViewById(R.id.textBoard)).setText("Draw");
+    }
+    public void recordBig(View view) {
+        ((TextView)findViewById(R.id.textBoard)).setText("Big");
+    }
+
 
     /**
      * Allows the app to send asyncronic messages and no blocking the UI thread

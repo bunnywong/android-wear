@@ -65,8 +65,8 @@
         android:id="@+id/btLeftWalk"
         android:onClick="leftWalkMove"
         android:layout_gravity="right|center_vertical"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/btWalk"
+        android:layout_alignEnd="@+id/textSmall" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -80,9 +80,10 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:paddingRight="10dp"
-        android:layout_above="@+id/btSpeak"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/textDraw"
         android:layout_alignParentStart="true"
-        android:textStyle="bold" />
+        android:onClick="recordSmall" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -100,7 +101,42 @@
         android:paddingTop="5dp"
         android:paddingRight="10dp"
         android:paddingBottom="5dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:onClick="recordBig" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="D"
+        android:id="@+id/textDraw"
+        android:background="#666666"
+        android:capitalize="characters"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="recordDraw" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="board"
+        android:id="@+id/textBoard"
+        android:background="#666666"
+        android:capitalize="characters"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:onClick="recordSmall"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
