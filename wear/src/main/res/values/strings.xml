@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">AA box</string>
+
+    <string name="recordSmall">small</string>
+    <string name="recordBig">BIG</string>
+    <string name="recordDraw">Draw</string>
+
+    <string name="msg_updated">Updated</string>
+
+    <string name="voice_again">again</string>
+    <string name="voice_no">no</string>
+    <string name="voice_cancel">cancel</string>
+    <string name="voice_clear">clear</string>
+    <string name="voice_delete">delete</string>
+
+    <string name="msg_commandNoMatch">Command not match, please try again</string>
+    <string name="msg_notPresent">Voice recognizer not present</string>
+    <string name="msg_deleteRecord">Delete recored</string>
+    <string name="msg_confirmDelete">Are you sure to delete all record ?</string>
+    <string name="msg_recordEmpty">Record empty</string>
+    <string name="msg_updating">updating ...</string>
+    <string name="msg_recordSaved">Record saved</string>
+    <string name="msg_updateError">Update Error</string>
+    <string name="msg_audioError">Audio Error</string>
+    <string name="msg_clientError">Client Error</string>
+    <string name="msg_networkError">Network Error</string>
+    <string name="msg_noMatch">No Match</string>
+    <string name="msg_serverError">Server Error</string>
+
+
+
+
 </resources>

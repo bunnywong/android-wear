@@ -49,34 +49,14 @@ public class WearActivity extends Activity {
     }
 
     public void checkVoiceRecognition() {
+
         // Check if voice recognition is present
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
         if (activities.size() == 0) {
             mbtSpeak.setEnabled(false);
-            showToastMessage("Voice recognizer not present");
+            showToastMessage(getResources().getString(R.string.msg_notPresent));
         }
-    }
-
-    public void speak(View view) {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-
-        // Specify the calling package to identify your application
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass()
-                .getPackage().getName());
-
-        // Given an hint to the recognizer about what the user is going to say
-        //There are two form of language model available
-        //1.LANGUAGE_MODEL_WEB_SEARCH : For short phrases
-        //2.LANGUAGE_MODEL_FREE_FORM  : If not sure about the words or phrases and its domain.
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
-
-        // Specify how many results you want to receive. The results will be
-        // sorted where the first result is the one with higher confidence.
-        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
-        //Start the Voice recognizer activity for the result.
-        startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
 
     // Page redirect
@@ -105,6 +85,7 @@ public class WearActivity extends Activity {
         updateLog("clear");
     }
     public void backToVoiceCommand() {
+        mbtSpeak    = (ImageButton) findViewById(R.id.btSpeak);
         mbtSpeak.performClick();
     }
 
@@ -133,8 +114,8 @@ public class WearActivity extends Activity {
         if (recordType == "recordClear") {
             // 1. Do confirm first (advance)
             new AlertDialog.Builder(this)
-                    .setTitle("Delete recored")
-                    .setMessage("Are you sure to delete all record ?")
+                    .setTitle(getResources().getString(R.string.msg_deleteRecord))
+                    .setMessage(getResources().getString(R.string.msg_confirmDelete))
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -144,7 +125,7 @@ public class WearActivity extends Activity {
                                     .remove("recordBig")
                                     .remove("recordDraw")
                                     .apply();
-                            showToastMessage("Record empty");
+                            showToastMessage(getResources().getString(R.string.msg_recordEmpty));
                         }
                     })
                     .setNegativeButton(android.R.string.no, null).show();
@@ -161,11 +142,11 @@ public class WearActivity extends Activity {
             if(editor.commit()) {
                 // Hide btn when updating
                 if(recordType == "recordSmall")
-                    mTextSmall.setText("updating ...");
+                    mTextSmall.setText(getResources().getString(R.string.msg_updating));
                 if(recordType == "recordBig")
-                    mTextBig.setText("updating ...");
+                    mTextBig.setText(getResources().getString(R.string.msg_updating));
                 if(recordType == "recordDraw")
-                    mTextDraw.setText("updating ...");
+                    mTextDraw.setText(getResources().getString(R.string.msg_updating));
 
                 new android.os.Handler().postDelayed(
                     new Runnable() {
@@ -173,9 +154,9 @@ public class WearActivity extends Activity {
                             updateRecordBtn();
                         }
                     }, 500);
-                showToastMessage("Record saved");
+                showToastMessage(getResources().getString(R.string.msg_recordSaved));
             } else {
-                showToastMessage("Updated ERROR");
+                showToastMessage(getResources().getString(R.string.msg_updateError));
             }
         }
     }
@@ -198,9 +179,9 @@ public class WearActivity extends Activity {
         final String updatedMsg = "s" + logSmall + ", " + "b" + logBig + ", " + "d" + logDraw ;
 
         // btn - Rewrite
-        mTextSmall.setText("small (" + logSmall + ")");
-        mTextBig.setText("BIG (" + logBig + ")");
-        mTextDraw.setText("Draw (" + logDraw + ")");
+        mTextSmall.setText(getResources().getString(R.string.recordSmall) + " (" + logSmall + ")");
+        mTextBig.setText(getResources().getString(R.string.recordBig) + " (" + logBig + ")");
+        mTextDraw.setText(getResources().getString(R.string.recordDraw) + " (" + logDraw + ")");
     }
 
     /**
@@ -215,6 +196,27 @@ public class WearActivity extends Activity {
         }
     }
 
+    public void speak(View view) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+        // Specify the calling package to identify your application
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass()
+                .getPackage().getName());
+
+        // Given an hint to the recognizer about what the user is going to say
+        //There are two form of language model available
+        //1.LANGUAGE_MODEL_WEB_SEARCH : For short phrases
+        //2.LANGUAGE_MODEL_FREE_FORM  : If not sure about the words or phrases and its domain.
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+
+        // Specify how many results you want to receive. The results will be
+        // sorted where the first result is the one with higher confidence.
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
+        //Start the Voice recognizer activity for the result.
+        startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //If Voice recognition is successful then it returns RESULT_OK
@@ -223,17 +225,17 @@ public class WearActivity extends Activity {
             if (resultCode == RESULT_OK) {
 
                 ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                boolean strContainAgain = textMatchList.get(0).contains(getResources().getString(R.string.voice_again));
+                boolean strContainNo    = textMatchList.get(0).contains(getResources().getString(R.string.voice_no));
+                boolean strContainCancel= textMatchList.get(0).contains(getResources().getString(R.string.voice_cancel));
+                boolean strContainClear = textMatchList.get(0).contains(getResources().getString(R.string.voice_clear));
+                boolean strContainDelete= textMatchList.get(0).contains(getResources().getString(R.string.voice_delete));
 
-
-                /* Check without `clear` */
-                if (textMatchList.get(0).contains("clear")) {
+                if (strContainAgain || strContainNo || strContainCancel) {
+                    backToVoiceCommand();
+                } else if (strContainClear || strContainDelete) {
                     // `clear` validate
-                    if (textMatchList.toString().replace("[", "").replace("]", "").equals("clear")) {
-                        updateLog("clear");
-                    } else {
-                        showToastMessage("`clear` command must be unique");
-                        backToVoiceCommand();
-                    }
+                    updateLog("clear");
                 } else {
                     // Combo input to logger
                     String words        = textMatchList.toString().replace("[", "").replace("]", "");;
@@ -260,12 +262,23 @@ public class WearActivity extends Activity {
                         }
 
                         // Summary report
+                        String updated  = getResources().getString(R.string.msg_updated);
+                        String small    =  getResources().getString(R.string.recordSmall);
+                        String big      =  getResources().getString(R.string.recordBig);
+                        String draw     =  getResources().getString(R.string.recordDraw);
+
                         if (counterSmall > 0)
-                            showToastMessage("updated: Small +" + counterSmall);
+                            showToastMessage(updated + ": " + small +" +" + counterSmall);
                         if (counterBig > 0)
-                            showToastMessage("updated: Big +" + counterBig);
+                            showToastMessage(updated + ": " + big + " +" + counterBig);
                         if (counterDraw > 0)
-                            showToastMessage("updated: Draw +" + counterDraw);
+                            showToastMessage(updated + ": " + draw + " +" + counterDraw);
+
+                        // No command match
+                        if (counterSmall == 0 && counterBig == 0 && counterDraw == 0) {
+                            showToastMessage(getResources().getString(R.string.msg_commandNoMatch));
+                            backToVoiceCommand();
+                        }
                     }
                 }
 
@@ -275,15 +288,15 @@ public class WearActivity extends Activity {
             }
             //Result code for various error.
             } else if (resultCode == RecognizerIntent.RESULT_AUDIO_ERROR) {
-                showToastMessage("Audio Error");
+                showToastMessage(getResources().getString(R.string.msg_updateError));
             } else if (resultCode == RecognizerIntent.RESULT_CLIENT_ERROR) {
-                showToastMessage("Client Error");
+                showToastMessage(getResources().getString(R.string.msg_clientError));
             } else if (resultCode == RecognizerIntent.RESULT_NETWORK_ERROR) {
-                showToastMessage("Network Error");
+                showToastMessage(getResources().getString(R.string.msg_networkError));
             } else if (resultCode == RecognizerIntent.RESULT_NO_MATCH) {
-                showToastMessage("No Match");
+                showToastMessage(getResources().getString(R.string.msg_noMatch));
             } else if (resultCode == RecognizerIntent.RESULT_SERVER_ERROR) {
-                showToastMessage("Server Error");
+                showToastMessage(getResources().getString(R.string.msg_serverError));
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
