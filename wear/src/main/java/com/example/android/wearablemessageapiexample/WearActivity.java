@@ -259,7 +259,7 @@ public class WearActivity extends Activity {
                             }
                         }
 
-                        // Summary alert
+                        // Summary report
                         if (counterSmall > 0)
                             showToastMessage("updated: Small +" + counterSmall);
                         if (counterBig > 0)
@@ -297,7 +297,7 @@ public class WearActivity extends Activity {
     }
 
     /* ---------------------------------------------------------------------------------------------------- */
-    /*  Other status     */
+    /*  Other App status     */
     /* ---------------------------------------------------------------------------------------------------- */
     @Override
     protected void onResume() {
