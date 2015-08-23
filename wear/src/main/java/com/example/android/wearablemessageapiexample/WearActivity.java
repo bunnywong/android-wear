@@ -11,7 +11,6 @@ import android.content.pm.ResolveInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.View;
 //import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,7 +37,7 @@ public class WearActivity extends Activity {
     private String remoteNodeId;
     private ImageButton mbtSpeak;
 
-    private TextView mTextSmall, mTextBig, mTextDraw, mTextClear;
+    private TextView mTextSmall, mTextBig, mTextDraw, mTextClear, mTextBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +45,19 @@ public class WearActivity extends Activity {
         setContentView(R.layout.main_activity);
 
         mbtSpeak    = (ImageButton) findViewById(R.id.btSpeak);
-        mTextSmall  = (TextView) findViewById(R.id.textSmall);
-        mTextDraw   = (TextView) findViewById(R.id.textDraw);
-        mTextBig    = (TextView) findViewById(R.id.textBig);
-        mTextClear  = (TextView) findViewById(R.id.textClear);
 
         apiClient = apiClientFactory();
         checkVoiceRecognition();
+
+//        initRecord();
     }
 
+    public void initRecord() {
+        // btn - init
+//        mTextSmall.setText("S");
+//        mTextBig.setText("B");
+//        mTextDraw.setText("D");
+    }
     public void checkVoiceRecognition() {
         // Check if voice recognition is present
         PackageManager pm = getPackageManager();
@@ -86,6 +89,17 @@ public class WearActivity extends Activity {
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
 
+    // Page redirect
+    public void pageMain(View view) {
+        setContentView(R.layout.main_activity);
+    }
+    public void pageRecord(View view) {
+        setContentView(R.layout.record_activity);
+    }
+    public void pageSetting(View view) {
+        setContentView(R.layout.setting_activity);
+    }
+
     // Bind: click / voice
     public void recordSmall(View view) {
         updateLog("small");
@@ -105,6 +119,13 @@ public class WearActivity extends Activity {
 
     public void updateLog(String mode) {
         final String recordType;
+        mTextSmall  = (TextView) findViewById(R.id.textRecordSmall);
+        mTextDraw   = (TextView) findViewById(R.id.textRecordDraw);
+        mTextBig    = (TextView) findViewById(R.id.textRecordBig);
+        mTextBoard  = ((TextView)findViewById(R.id.textRecordBoard));
+
+        mTextClear  = (TextView) findViewById(R.id.textSettingDel);
+
 
         if (mode == "small") {
             recordType = "recordSmall";
@@ -134,20 +155,13 @@ public class WearActivity extends Activity {
                                     .remove("recordBig")
                                     .remove("recordDraw")
                                     .apply();
-
-                            // Clear board
-                            ((TextView)findViewById(R.id.textBoard)).setText("Record empty");
-
-                            // btn - init
-                            ((TextView) findViewById(R.id.textSmall)).setText("S");
-                            ((TextView) findViewById(R.id.textBig)).setText("B");
-                            ((TextView) findViewById(R.id.textDraw)).setText("D");
+                            showToastMessage("Record empty");
                         }
                     })
                     .setNegativeButton(android.R.string.no, null).show();
         } else {
             // Print status to user
-            ((TextView)findViewById(R.id.textBoard)).setText("updating " + mode + " ...");
+            ((TextView)findViewById(R.id.textRecordBoard)).setText("updating " + mode + " ...");
 
             /* Update record */
             // Get log
@@ -161,11 +175,11 @@ public class WearActivity extends Activity {
             if(editor.commit()) {
                 // Hide btn when updating
                 if(recordType == "recordSmall")
-                    ((TextView) findViewById(R.id.textSmall)).setText("S");
+                    mTextSmall.setText("S");
                 if(recordType == "recordBig")
-                    ((TextView) findViewById(R.id.textBig)).setText("B");
+                    mTextBig.setText("B");
                 if(recordType == "recordDraw")
-                    ((TextView) findViewById(R.id.textDraw)).setText("D");
+                    mTextDraw.setText("D");
 
                 // Get results
                 final int logSmall = sharedPref.getInt("recordSmall", 0);
@@ -178,15 +192,15 @@ public class WearActivity extends Activity {
                 new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
-                            ((TextView) findViewById(R.id.textBoard)).setText(updatedMsg);
+                            mTextBoard.setText(updatedMsg);
 
                             // btn - Rewrite
                             if(recordType == "recordSmall")
-                                ((TextView) findViewById(R.id.textSmall)).setText("S (" + logSmall + ")");
+                                mTextSmall.setText("S (" + logSmall + ")");
                             if(recordType == "recordBig")
-                                ((TextView) findViewById(R.id.textBig)).setText("(" + logBig + ") B");
+                                mTextBig.setText("(" + logBig + ") B");
                             if(recordType == "recordDraw")
-                                ((TextView) findViewById(R.id.textDraw)).setText("D (" + logDraw + ")");
+                                mTextDraw.setText("D (" + logDraw + ")");
                         }
                     }, 500);
             }

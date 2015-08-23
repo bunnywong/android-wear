@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2014 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recordRelativeLayout"
+    android:background="@drawable/background_dice2">
+
+    <ImageButton
+        android:id="@+id/btRecordHome"
+        android:src="@drawable/home_selector"
+        android:background="@null"
+        tools:context=".VoiceRecognitionActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:onClick="pageMain" />
+
+    <ImageButton
+        android:id="@+id/btSpeak"
+        android:onClick="speak"
+        android:src="@drawable/my_mic_selector"
+        android:background="@null"
+        tools:context=".VoiceRecognitionActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_below="@+id/textRecordDraw"
+        android:layout_centerHorizontal="true" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="S"
+        android:id="@+id/textRecordSmall"
+        android:background="#666666"
+        android:capitalize="characters"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:onClick="recordSmall"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="B"
+        android:id="@+id/textRecordBig"
+        android:background="#666666"
+        android:autoText="false"
+        android:capitalize="characters"
+        android:clickable="false"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:onClick="recordBig"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="D"
+        android:id="@+id/textRecordDraw"
+        android:background="#339900"
+        android:capitalize="characters"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:onClick="recordDraw"
+        android:layout_alignParentStart="true"
+        android:clickable="false"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="board"
+        android:id="@+id/textRecordBoard"
+        android:background="#666666"
+        android:capitalize="words"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:textStyle="bold"
+        android:onClick="recordSmall"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:editable="true" />
+
+
+</RelativeLayout>
+
