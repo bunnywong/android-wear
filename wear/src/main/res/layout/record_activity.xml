@@ -44,15 +44,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_below="@+id/textRecordDraw"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/textRecordBig" />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="S"
+        android:text="small"
         android:id="@+id/textRecordSmall"
         android:background="#666666"
         android:capitalize="characters"
@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="B"
+        android:text="BIG"
         android:id="@+id/textRecordBig"
         android:background="#666666"
         android:autoText="false"
@@ -81,14 +81,15 @@
         android:paddingBottom="5dp"
         android:textStyle="bold"
         android:onClick="recordBig"
-        android:layout_alignParentBottom="true"
+        android:layout_alignBaseline="@+id/textRecordSmall"
+        android:layout_alignBottom="@+id/textRecordSmall"
         android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="D"
+        android:text="Draw"
         android:id="@+id/textRecordDraw"
         android:background="#339900"
         android:capitalize="characters"
@@ -98,9 +99,9 @@
         android:paddingRight="10dp"
         android:textStyle="bold"
         android:onClick="recordDraw"
-        android:layout_alignParentStart="true"
         android:clickable="false"
-        android:layout_centerVertical="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -115,10 +116,9 @@
         android:paddingBottom="5dp"
         android:paddingRight="10dp"
         android:textStyle="bold"
-        android:onClick="recordSmall"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:editable="true" />
+        android:editable="true"
+        android:layout_alignTop="@+id/btSpeak"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

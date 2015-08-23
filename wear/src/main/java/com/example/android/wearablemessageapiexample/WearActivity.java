@@ -45,19 +45,11 @@ public class WearActivity extends Activity {
         setContentView(R.layout.main_activity);
 
         mbtSpeak    = (ImageButton) findViewById(R.id.btSpeak);
-
         apiClient = apiClientFactory();
+
         checkVoiceRecognition();
-
-//        initRecord();
     }
 
-    public void initRecord() {
-        // btn - init
-//        mTextSmall.setText("S");
-//        mTextBig.setText("B");
-//        mTextDraw.setText("D");
-    }
     public void checkVoiceRecognition() {
         // Check if voice recognition is present
         PackageManager pm = getPackageManager();
@@ -95,6 +87,7 @@ public class WearActivity extends Activity {
     }
     public void pageRecord(View view) {
         setContentView(R.layout.record_activity);
+        updateRecordBtn();
     }
     public void pageSetting(View view) {
         setContentView(R.layout.setting_activity);
@@ -181,30 +174,40 @@ public class WearActivity extends Activity {
                 if(recordType == "recordDraw")
                     mTextDraw.setText("D");
 
-                // Get results
-                final int logSmall = sharedPref.getInt("recordSmall", 0);
-                final int logBig = sharedPref.getInt("recordBig", 0);
-                final int logDraw = sharedPref.getInt("recordDraw", 0);
-                int logTotal[] = {logSmall, logBig, logDraw};
-                Arrays.sort(logTotal);
-                final String updatedMsg = "s" + logSmall + ", " + "b" + logBig + ", " + "d" + logDraw ;
-
                 new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
-                            mTextBoard.setText(updatedMsg);
-
-                            // btn - Rewrite
-                            if(recordType == "recordSmall")
-                                mTextSmall.setText("S (" + logSmall + ")");
-                            if(recordType == "recordBig")
-                                mTextBig.setText("(" + logBig + ") B");
-                            if(recordType == "recordDraw")
-                                mTextDraw.setText("D (" + logDraw + ")");
+                            updateRecordBtn();
                         }
                     }, 500);
             }
         }
+    }
+
+    public void updateRecordBtn() {
+        mTextSmall  = (TextView) findViewById(R.id.textRecordSmall);
+        mTextDraw   = (TextView) findViewById(R.id.textRecordDraw);
+        mTextBig    = (TextView) findViewById(R.id.textRecordBig);
+        mTextBoard  = ((TextView)findViewById(R.id.textRecordBoard));
+
+        // Log init
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+
+        // Get results
+        final int logSmall = sharedPref.getInt("recordSmall", 0);
+        final int logBig = sharedPref.getInt("recordBig", 0);
+        final int logDraw = sharedPref.getInt("recordDraw", 0);
+        int logTotal[] = {logSmall, logBig, logDraw};
+        Arrays.sort(logTotal);
+        final String updatedMsg = "s" + logSmall + ", " + "b" + logBig + ", " + "d" + logDraw ;
+
+        mTextBoard.setText(updatedMsg);
+
+        // btn - Rewrite
+        mTextSmall.setText("small (" + logSmall + ")");
+        mTextBig.setText("Big (" + logBig + ")");
+        mTextDraw.setText("Draw (" + logDraw + ")");
     }
 
     /**
