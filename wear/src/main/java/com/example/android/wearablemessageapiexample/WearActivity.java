@@ -37,7 +37,7 @@ public class WearActivity extends Activity {
     private String remoteNodeId;
     private ImageButton mbtSpeak;
 
-    private TextView mTextSmall, mTextBig, mTextDraw, mTextClear, mTextBoard;
+    private TextView mTextSmall, mTextBig, mTextDraw, mTextClear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +115,6 @@ public class WearActivity extends Activity {
         mTextSmall  = (TextView) findViewById(R.id.textRecordSmall);
         mTextDraw   = (TextView) findViewById(R.id.textRecordDraw);
         mTextBig    = (TextView) findViewById(R.id.textRecordBig);
-        mTextBoard  = ((TextView)findViewById(R.id.textRecordBoard));
 
         mTextClear  = (TextView) findViewById(R.id.textSettingDel);
 
@@ -153,9 +152,6 @@ public class WearActivity extends Activity {
                     })
                     .setNegativeButton(android.R.string.no, null).show();
         } else {
-            // Print status to user
-            ((TextView)findViewById(R.id.textRecordBoard)).setText("updating " + mode + " ...");
-
             /* Update record */
             // Get log
             int result = sharedPref.getInt(recordType, 0);
@@ -168,11 +164,11 @@ public class WearActivity extends Activity {
             if(editor.commit()) {
                 // Hide btn when updating
                 if(recordType == "recordSmall")
-                    mTextSmall.setText("S");
+                    mTextSmall.setText("updating ...");
                 if(recordType == "recordBig")
-                    mTextBig.setText("B");
+                    mTextBig.setText("updating ...");
                 if(recordType == "recordDraw")
-                    mTextDraw.setText("D");
+                    mTextDraw.setText("updating ...");
 
                 new android.os.Handler().postDelayed(
                     new Runnable() {
@@ -180,6 +176,9 @@ public class WearActivity extends Activity {
                             updateRecordBtn();
                         }
                     }, 500);
+                showToastMessage("Record saved");
+            } else {
+                showToastMessage("Updated ERROR");
             }
         }
     }
@@ -188,7 +187,6 @@ public class WearActivity extends Activity {
         mTextSmall  = (TextView) findViewById(R.id.textRecordSmall);
         mTextDraw   = (TextView) findViewById(R.id.textRecordDraw);
         mTextBig    = (TextView) findViewById(R.id.textRecordBig);
-        mTextBoard  = ((TextView)findViewById(R.id.textRecordBoard));
 
         // Log init
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
@@ -201,8 +199,6 @@ public class WearActivity extends Activity {
         int logTotal[] = {logSmall, logBig, logDraw};
         Arrays.sort(logTotal);
         final String updatedMsg = "s" + logSmall + ", " + "b" + logBig + ", " + "d" + logDraw ;
-
-        mTextBoard.setText(updatedMsg);
 
         // btn - Rewrite
         mTextSmall.setText("small (" + logSmall + ")");
