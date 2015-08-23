@@ -1,6 +1,7 @@
 package com.example.android.wearablemessageapiexample;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -117,23 +118,33 @@ public class WearActivity extends Activity {
 
         // Log init
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        final SharedPreferences.Editor editor = sharedPref.edit();
 
         if (recordType == "recordClear") {
             // 1. Do confirm first (advance)
-            // Clear log history
-            editor.remove("recordSmall")
-                .remove("recordBig")
-                .remove("recordDraw")
-            .apply();
+            new AlertDialog.Builder(this)
+                    .setTitle("Warning")
+                    .setMessage("Confirm delete all records ?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-            // Clear board
-            ((TextView)findViewById(R.id.textBoard)).setText("Record empty");
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // Clear log history
+                            editor.remove("recordSmall")
+                                    .remove("recordBig")
+                                    .remove("recordDraw")
+                                    .apply();
 
-            // btn - init
-            ((TextView) findViewById(R.id.textSmall)).setText("S");
-            ((TextView) findViewById(R.id.textBig)).setText("B");
-            ((TextView) findViewById(R.id.textDraw)).setText("D");
+                            // Clear board
+                            ((TextView)findViewById(R.id.textBoard)).setText("Record empty");
+
+                            // btn - init
+                            ((TextView) findViewById(R.id.textSmall)).setText("S");
+                            ((TextView) findViewById(R.id.textBig)).setText("B");
+                            ((TextView) findViewById(R.id.textDraw)).setText("D");
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
         } else {
             // Print status to user
             ((TextView)findViewById(R.id.textBoard)).setText("updating " + mode + " ...");
