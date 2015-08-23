@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
-//import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
 import org.codehaus.plexus.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,7 +91,7 @@ public class WearActivity extends Activity {
         setContentView(R.layout.setting_activity);
     }
 
-    // Bind: click / voice
+    // Action: By `click` or `voice`
     public void recordSmall(View view) {
         updateLog("small");
     }
@@ -118,7 +116,6 @@ public class WearActivity extends Activity {
 
         mTextClear  = (TextView) findViewById(R.id.textSettingDel);
 
-
         if (mode == "small") {
             recordType = "recordSmall";
         } else if (mode == "big") {
@@ -136,8 +133,8 @@ public class WearActivity extends Activity {
         if (recordType == "recordClear") {
             // 1. Do confirm first (advance)
             new AlertDialog.Builder(this)
-                    .setTitle("Warning")
-                    .setMessage("Confirm delete all records ?")
+                    .setTitle("Delete recored")
+                    .setMessage("Are you sure to delete all record ?")
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -202,7 +199,7 @@ public class WearActivity extends Activity {
 
         // btn - Rewrite
         mTextSmall.setText("small (" + logSmall + ")");
-        mTextBig.setText("Big (" + logBig + ")");
+        mTextBig.setText("BIG (" + logBig + ")");
         mTextDraw.setText("Draw (" + logDraw + ")");
     }
 
@@ -245,26 +242,31 @@ public class WearActivity extends Activity {
                     int counterSmall    = 0;
                     int counterDraw     = 0;
 
-                    for (int i = 0; i < word.length; i++) {
-                        if (word[i].toString().equals("small")) {
-                            updateLog("small");
-                            counterSmall++;
-                        } else if (word[i].toString().equals("big")) {
-                            updateLog("big");
-                            counterBig++;
-                        } else if (word[i].toString().equals("draw")) {
-                            updateLog("draw");
-                            counterDraw++;
+                    if (word.length > 5) {
+                        // Limit combo command up to 5
+                        showToastMessage("Record more than 5, please try again.");
+                    } else {
+                        for (int i = 0; i < word.length; i++) {
+                            if (word[i].toString().equals("small")) {
+                                updateLog("small");
+                                counterSmall++;
+                            } else if (word[i].toString().equals("big")) {
+                                updateLog("big");
+                                counterBig++;
+                            } else if (word[i].toString().equals("draw")) {
+                                updateLog("draw");
+                                counterDraw++;
+                            }
                         }
-                    }
 
-                    // Summary alert
-                    if (counterSmall > 0)
-                        showToastMessage("updated: Small +" + counterSmall);
-                    if (counterBig > 0)
-                        showToastMessage("updated: Big +" + counterBig);
-                    if (counterDraw > 0)
-                        showToastMessage("updated: Draw +" + counterDraw);
+                        // Summary alert
+                        if (counterSmall > 0)
+                            showToastMessage("updated: Small +" + counterSmall);
+                        if (counterBig > 0)
+                            showToastMessage("updated: Big +" + counterBig);
+                        if (counterDraw > 0)
+                            showToastMessage("updated: Draw +" + counterDraw);
+                    }
                 }
 
             if (!textMatchList.isEmpty()) {
