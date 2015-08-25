@@ -11,6 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,11 +23,22 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
+import com.google.common.collect.ImmutableMap;
+import com.strongloop.android.loopback.ModelRepository;
+import com.strongloop.android.loopback.RestAdapter;
+import com.strongloop.android.loopback.Model;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import org.codehaus.plexus.util.StringUtils;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+/**
+ * A widget for sale.
+ */
 
 public class WearActivity extends Activity {
     private final String COMMAND_PATH = "/command";
@@ -88,6 +100,30 @@ public class WearActivity extends Activity {
         mbtSpeak    = (ImageButton) findViewById(R.id.btSpeak);
         mbtSpeak.performClick();
     }
+    public void writeServer(View view) {
+        myLoopback();
+    }
+    public void myLoopback() { // ***
+        RestAdapter adapter = new RestAdapter(getApplicationContext(), "http://0.0.0.0:3000/api/aabox?access_token=bun");
+        ModelRepository repository = adapter.createRepository("aabox");
+        Model box = repository.createObject(ImmutableMap.of("name", "Big"));
+
+// @todo
+// https://docs.strongloop.com/display/public/LB/Android+SDK#AndroidSDK-Createandmodifywidgets
+//        box.price = new BigDecimal("1.50");
+
+        box.save(new VoidCallback() {
+            @Override
+            public void onSuccess() {
+                showToastMessage("push to server");
+            }
+            @Override
+            public void onError(Throwable t) {
+                showToastMessage("push failed:" + t);
+            }
+        });
+    }
+
 
     public void updateLog(String mode) {
         final String recordType;
@@ -307,6 +343,49 @@ public class WearActivity extends Activity {
      **/
     void showToastMessage(String message){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public class WidgetRepository extends ModelRepository<Widget> {
+        public WidgetRepository() {
+            super("widget", Widget.class);
+        }
+    }
+
+    public class Widget extends Model {
+        private String name;
+        private int small, big, draw;
+
+        // Name
+        public void setName(String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
+
+        // Small
+        public void setSmall(int small) {
+            this.small = small;
+        }
+        public int getSmall() {
+            return small;
+        }
+
+        // Big
+        public void setBig(int big) {
+            this.big = big;
+        }
+        public int getBig() {
+            return big;
+        }
+
+        // Draw
+        public void setDraw(int draw) {
+            this.draw= draw;
+        }
+        public int getDraw() {
+            return draw;
+        }
     }
 
     /* ---------------------------------------------------------------------------------------------------- */

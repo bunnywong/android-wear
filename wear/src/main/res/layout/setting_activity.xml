@@ -25,8 +25,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="\@TODO"
-        android:id="@+id/textSettingServer"
+        android:text="UPLOAD"
+        android:id="@+id/textSettingUpload"
         android:background="#339900"
         android:capitalize="characters"
         android:paddingLeft="10dp"
@@ -39,7 +39,8 @@
         android:gravity="center"
         android:layout_below="@+id/textSettingDel"
         android:layout_alignStart="@+id/textSettingDel"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:onClick="writeServer" />
 
     <TextView
         android:layout_width="wrap_content"
