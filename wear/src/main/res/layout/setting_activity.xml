@@ -25,26 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="\@TODO"
-        android:id="@+id/textSettingServer"
-        android:background="#339900"
-        android:capitalize="characters"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingRight="10dp"
-        android:clickable="false"
-        android:textAlignment="viewEnd"
-        android:width="150dp"
-        android:gravity="center"
-        android:layout_below="@+id/textSettingDel"
-        android:layout_alignStart="@+id/textSettingDel"
-        android:layout_marginTop="20dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="DEL RECORD"
         android:id="@+id/textSettingDel"
         android:background="#339900"
@@ -58,8 +38,8 @@
         android:width="150dp"
         android:gravity="center"
         android:onClick="recordClear"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
     <TextView
         android:id="@+id/textSettingTitle"
         android:layout_width="wrap_content"
