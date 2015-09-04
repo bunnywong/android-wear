@@ -126,6 +126,14 @@ public class WearActivity extends Activity {
                                     .remove("recordDraw")
                                     .apply();
                             showToastMessage(getResources().getString(R.string.msg_recordEmpty));
+
+                            // btn digi clear
+                            new android.os.Handler().postDelayed(
+                                    new Runnable() {
+                                        public void run() {
+                                            updateRecordBtn();
+                                        }
+                                    }, 500);
                         }
                     })
                     .setNegativeButton(android.R.string.no, null).show();
@@ -174,9 +182,6 @@ public class WearActivity extends Activity {
         final int logSmall = sharedPref.getInt("recordSmall", 0);
         final int logBig = sharedPref.getInt("recordBig", 0);
         final int logDraw = sharedPref.getInt("recordDraw", 0);
-        int logTotal[] = {logSmall, logBig, logDraw};
-        Arrays.sort(logTotal);
-        final String updatedMsg = "s" + logSmall + ", " + "b" + logBig + ", " + "d" + logDraw ;
 
         // btn - Rewrite
         mTextSmall.setText(getResources().getString(R.string.recordSmall) + " (" + logSmall + ")");
@@ -228,12 +233,16 @@ public class WearActivity extends Activity {
                 boolean strContainAgain = textMatchList.get(0).contains(getResources().getString(R.string.voice_again));
                 boolean strContainNo    = textMatchList.get(0).contains(getResources().getString(R.string.voice_no));
                 boolean strContainCancel= textMatchList.get(0).contains(getResources().getString(R.string.voice_cancel));
-                boolean strContainClear = textMatchList.get(0).contains(getResources().getString(R.string.voice_clear));
-                boolean strContainDelete= textMatchList.get(0).contains(getResources().getString(R.string.voice_delete));
+                    boolean strContainCancel_zh = textMatchList.get(0).contains("取消");
 
-                if (strContainAgain || strContainNo || strContainCancel) {
+                boolean strContainClear = textMatchList.get(0).contains(getResources().getString(R.string.voice_clear));
+                    boolean strContainClear_zh = textMatchList.get(0).contains("重設");
+                boolean strContainDelete = textMatchList.get(0).contains(getResources().getString(R.string.voice_delete));
+                    boolean strContainDelete_zh = textMatchList.get(0).contains("刪除");
+
+                if (strContainAgain || strContainNo || strContainCancel || strContainCancel_zh) {
                     backToVoiceCommand();
-                } else if (strContainClear || strContainDelete) {
+                } else if (strContainClear || strContainDelete || strContainClear_zh || strContainDelete_zh) {
                     // `clear` validate
                     updateLog("clear");
                 } else {
@@ -249,7 +258,7 @@ public class WearActivity extends Activity {
                         showToastMessage("Record more than 5, please try again.");
                     } else {
                         for (int i = 0; i < word.length; i++) {
-                            if (word[i].toString().equals("small") || word[i].toString().equals("細")) {
+                            if (word[i].toString().equals("small") || word[i].toString().equals("細") || word[i].toString().equals("小")) {
                                 updateLog("small");
                                 counterSmall++;
                             } else if (word[i].toString().equals("big") || word[i].toString().equals("大")) {
