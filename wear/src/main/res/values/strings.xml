@@ -18,7 +18,7 @@
     <string name="msg_deleteRecord">Delete recored</string>
     <string name="msg_confirmDelete">Are you sure to delete all record ?</string>
     <string name="msg_recordEmpty">Record empty</string>
-    <string name="msg_updating">updating ...</string>
+    <string name="msg_updating">updating</string>
     <string name="msg_recordSaved">Record saved</string>
     <string name="msg_updateError">Update Error</string>
     <string name="msg_audioError">Audio Error</string>
@@ -26,8 +26,4 @@
     <string name="msg_networkError">Network Error</string>
     <string name="msg_noMatch">No Match</string>
     <string name="msg_serverError">Server Error</string>
-
-
-
-
 </resources>

@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recordRelativeLayout"
-    android:background="@drawable/background_dice2">
+    android:background="@drawable/bg_dashboard">
 
     <ImageButton
         android:id="@+id/btRecordHome"
@@ -14,11 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:onClick="pageMain"
-        android:layout_marginLeft="-2dp"
-        android:layout_marginTop="-2dp" />
+        android:layout_marginLeft="25dp"
+        android:layout_alignTop="@+id/textRecordDraw"
+        android:layout_above="@+id/btSpeak" />
 
     <ImageButton
         android:id="@+id/btSpeak"
@@ -39,7 +38,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="small"
         android:id="@+id/textRecordSmall"
-        android:background="#666666"
+        android:background="#6F3662"
         android:capitalize="characters"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
@@ -47,8 +46,13 @@
         android:paddingRight="10dp"
         android:textStyle="bold"
         android:onClick="recordSmall"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/btSpeak"
+        android:layout_toStartOf="@+id/textRecordBig"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:minWidth="100dp"
+        android:layout_toLeftOf="@+id/btSpeak"
+        android:layout_marginRight="-35dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,7 +60,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="BIG "
         android:id="@+id/textRecordBig"
-        android:background="#666666"
+        android:background="#9F6164"
         android:autoText="false"
         android:capitalize="characters"
         android:clickable="false"
@@ -66,10 +70,10 @@
         android:paddingBottom="5dp"
         android:textStyle="bold"
         android:onClick="recordBig"
-        android:layout_alignBaseline="@+id/textRecordSmall"
-        android:layout_alignBottom="@+id/textRecordSmall"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/btRecordHome" />
+        android:layout_alignEnd="@+id/textRecordDraw"
+        android:minWidth="100dp"
+        android:layout_margin="0dp"
+        android:layout_below="@+id/btSpeak" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -86,8 +90,10 @@
         android:textStyle="bold"
         android:onClick="recordDraw"
         android:clickable="false"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_above="@+id/btSpeak"
+        android:layout_toEndOf="@+id/btSpeak"
+        android:minWidth="200dp"
+        android:layout_marginLeft="-25dp" />
 
 
 </RelativeLayout>
