@@ -249,13 +249,13 @@ public class WearActivity extends Activity {
                         showToastMessage("Record more than 5, please try again.");
                     } else {
                         for (int i = 0; i < word.length; i++) {
-                            if (word[i].toString().equals("small")) {
+                            if (word[i].toString().equals("small") || word[i].toString().equals("細")) {
                                 updateLog("small");
                                 counterSmall++;
-                            } else if (word[i].toString().equals("big")) {
+                            } else if (word[i].toString().equals("big") || word[i].toString().equals("大")) {
                                 updateLog("big");
                                 counterBig++;
-                            } else if (word[i].toString().equals("draw")) {
+                            } else if (word[i].toString().equals("draw") || word[i].toString().equals("和")) {
                                 updateLog("draw");
                                 counterDraw++;
                             }
