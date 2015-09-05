@@ -7,12 +7,6 @@
 
     <string name="msg_updated">Updated</string>
 
-    <string name="voice_again">again</string>
-    <string name="voice_no">no</string>
-    <string name="voice_cancel">cancel</string>
-    <string name="voice_clear">clear</string>
-    <string name="voice_delete">delete</string>
-
     <string name="msg_commandNoMatch">Command not match, please try again</string>
     <string name="msg_notPresent">Voice recognizer not present</string>
     <string name="msg_deleteRecord">Delete recored</string>

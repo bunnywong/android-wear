@@ -84,6 +84,7 @@ public class WearActivity extends Activity {
     public void recordClear(View view) {
         updateLog("clear");
     }
+
     public void backToVoiceCommand() {
         mbtSpeak    = (ImageButton) findViewById(R.id.btSpeak);
         mbtSpeak.performClick();
@@ -230,22 +231,23 @@ public class WearActivity extends Activity {
             if (resultCode == RESULT_OK) {
 
                 ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                boolean strContainAgain = textMatchList.get(0).contains(getResources().getString(R.string.voice_again));
-                boolean strContainNo    = textMatchList.get(0).contains(getResources().getString(R.string.voice_no));
-                boolean strContainCancel= textMatchList.get(0).contains(getResources().getString(R.string.voice_cancel));
+                int keep = 1;
+
+                boolean strContainCancel= textMatchList.get(0).contains("again");
                     boolean strContainCancel_zh = textMatchList.get(0).contains("取消");
 
-                boolean strContainClear = textMatchList.get(0).contains(getResources().getString(R.string.voice_clear));
+                boolean strContainClear = textMatchList.get(0).contains("clear");
                     boolean strContainClear_zh = textMatchList.get(0).contains("重設");
-                boolean strContainDelete = textMatchList.get(0).contains(getResources().getString(R.string.voice_delete));
-                    boolean strContainDelete_zh = textMatchList.get(0).contains("刪除");
 
-                if (strContainAgain || strContainNo || strContainCancel || strContainCancel_zh) {
+                if ((strContainCancel || strContainCancel_zh) && keep == 1) {
                     backToVoiceCommand();
-                } else if (strContainClear || strContainDelete || strContainClear_zh || strContainDelete_zh) {
-                    // `clear` validate
+                    keep = 0;
+                }
+                if ((strContainClear || strContainClear_zh) && keep == 1) {
                     updateLog("clear");
-                } else {
+                    keep = 0;
+                }
+                if(keep == 1) {
                     // Combo input to logger
                     String words        = textMatchList.toString().replace("[", "").replace("]", "");;
                     String[] word       = words.split(" ");
@@ -258,7 +260,7 @@ public class WearActivity extends Activity {
                         showToastMessage("Record more than 5, please try again.");
                     } else {
                         for (int i = 0; i < word.length; i++) {
-                            if (word[i].toString().equals("small") || word[i].toString().equals("細") || word[i].toString().equals("小")) {
+                            if (word[i].toString().equals("small") || word[i].toString().equals("細") || word[i].toString().equals("小") || word[i].toString().equals("西")) {
                                 updateLog("small");
                                 counterSmall++;
                             } else if (word[i].toString().equals("big") || word[i].toString().equals("大")) {
