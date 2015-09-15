@@ -226,16 +226,9 @@ public class WearActivity extends Activity {
 
                 ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 boolean strContainAgain = textMatchList.get(0).contains(getResources().getString(R.string.voice_again));
-                boolean strContainNo    = textMatchList.get(0).contains(getResources().getString(R.string.voice_no));
-                boolean strContainCancel= textMatchList.get(0).contains(getResources().getString(R.string.voice_cancel));
-                boolean strContainClear = textMatchList.get(0).contains(getResources().getString(R.string.voice_clear));
-                boolean strContainDelete= textMatchList.get(0).contains(getResources().getString(R.string.voice_delete));
 
-                if (strContainAgain || strContainNo || strContainCancel) {
+                if (strContainAgain) {
                     backToVoiceCommand();
-                } else if (strContainClear || strContainDelete) {
-                    // `clear` validate
-                    updateLog("clear");
                 } else {
                     // Combo input to logger
                     String words        = textMatchList.toString().replace("[", "").replace("]", "");;
